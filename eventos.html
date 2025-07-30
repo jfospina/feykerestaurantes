@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eventos - Fe&Ke</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="contenedor-pagina">
+    
+    <!-- Header -->
+    <header>
+      <p class="titulo">Fe&Ke RESTAURANTES</p>
+    </header>
+
+    <!-- Menú de navegación -->
+    <nav>
+      <div class="menu">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="https://drive.google.com/file/d/1tGZmCmgZf5KCLIlXTllO-6Lh3vxhGPOS/view?usp=drive_link" target="_blank">Carta</a></li>
+          <li><a href="reservas.html">Reservas</a></li>
+          <li><a href="eventos.html">Eventos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main>
+      <h3>Eventos Regulares</h3>
+      <div id="eventos-regulares" class="eventos"></div>
+
+      <h3>Eventos Actuales</h3>
+      <div id="eventos-actuales" class="eventos"></div>
+
+      <h3>Eventos Próximos</h3>
+      <div id="eventos-proximos" class="eventos"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer_styles">
+      <section class="verify">
+        <div><p>© 2025 Fe & Ke Restaurantes</p></div>
+      </section>
+      <section class="social">
+        <p>¡Síguenos!</p>
+        <div class="social-icons">
+          <a href="https://wa.me/51924526213" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://instagram.com/felipeospe" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@felipe_ospina" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </section>
+    </footer>
+  </div>
+
+  <!-- Script para cargar eventos desde Google Sheets -->
+  <script>
+    const URL_SHEET = "https://script.google.com/macros/s/AKfycbz15aES-KbTjvqgYj9bh4XprObmkMSC5R9TIoP8qpaNHBpqudC9xV_YYjn0dPleLWZPFw/exec";
+
+    function crearEventoFlip(evento) {
+      const div = document.createElement("div");
+      div.classList.add("evento", "flip-card");
+
+      div.innerHTML = `
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="../images/${evento.imagen}" alt="${evento.titulo}" />
+            <h4>${evento.titulo}</h4>
+          </div>
+          <div class="flip-card-back">
+            <p>${evento.descripcion}</p>
+          </div>
+        </div>
+      `;
+      return div;
+    }
+
+    fetch(URL_SHEET + "?hoja=eventos")
+      .then(response => response.json())
+      .then(data => {
+        const contenedorRegulares = document.getElementById("eventos-regulares");
+        const contenedorActuales = document.getElementById("eventos-actuales");
+        const contenedorProximos = document.getElementById("eventos-proximos");
+
+        contenedorRegulares.innerHTML = "";
+        contenedorActuales.innerHTML = "";
+        contenedorProximos.innerHTML = "";
+
+        data.forEach(evento => {
+          const card = crearEventoFlip(evento);
+          switch ((evento.tipo || "").toLowerCase()) {
+            case "regular":
+              contenedorRegulares.appendChild(card);
+              break;
+            case "actuales":
+              contenedorActuales.appendChild(card);
+              break;
+            case "proximo":
+            case "próximo":
+              contenedorProximos.appendChild(card);
+              break;
+          }
+        });
+      })
+      .catch(error => {
+        document.getElementById("eventos-regulares").innerHTML = "<p>Error al cargar eventos.</p>";
+        document.getElementById("eventos-actuales").innerHTML = "<p>Error al cargar eventos.</p>";
+        document.getElementById("eventos-proximos").innerHTML = "<p>Error al cargar eventos.</p>";
+        console.error("Error:", error);
+      });
+  </script>
+</body>
+</html>

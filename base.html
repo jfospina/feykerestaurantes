@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fe&Ke - [Nombre de la sección]</title>
+
+  <!-- CSS principal -->
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Íconos Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="contenedor-pagina">
+    <!-- Header -->
+    <header>
+      <p class="titulo">Fe&Ke RESTAURANTES</p>
+    </header>
+
+    <!-- Menú hamburguesa (solo móviles) -->
+    <div class="menu-toggle" id="menu-toggle">
+      <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- Navegación -->
+    <nav>
+      <div class="menu">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="https://drive.google.com/file/d/1tGZmCmgZf5KCLIlXTllO-6Lh3vxhGPOS/view?usp=drive_link" target="_blank">Carta</a></li>
+          <li><a href="reservas.html">Reservas</a></li>
+          <li><a href="eventos.html">Eventos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main>
+      <h3>[Aquí va el contenido de esta sección]</h3>
+      <p>Reemplaza este contenido con el de tu página específica.</p>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer_styles">
+      <section class="verify">
+        <p>© 2025 Fe & Ke Restaurantes</p>
+      </section>
+      <section class="social">
+        <p>¡Síguenos!</p>
+        <div class="social-icons">
+          <a href="https://wa.me/51924526213" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://instagram.com/felipeospe" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@felipe_ospina" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </section>
+    </footer>
+  </div>
+
+  <!-- Script menú hamburguesa -->
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.querySelector('.menu');
+
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

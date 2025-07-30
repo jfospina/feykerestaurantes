@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reservas - Fe&Ke</title>
+
+  <!-- Enlace al archivo de estilos -->
+  <link rel="stylesheet" href="css/style.css"/>
+
+  <!-- Font Awesome para íconos (si lo necesitas en otras páginas también) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <div class="contenedor-pagina">
+    <!-- Encabezado -->
+    <header>
+      <p class="titulo">Fe&Ke RESTAURANTES</p>
+    </header>
+
+    <!-- Navegación principal -->
+    <nav>
+      <div class="menu">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="https://drive.google.com/file/d/1tGZmCmgZf5KCLIlXTllO-6Lh3vxhGPOS/view?usp=drive_link" target="_blank">Carta</a></li>
+          <li><a href="reservas.html">Reservas</a></li>
+          <li><a href="eventos.html">Eventos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Formulario de reservas -->
+    <main>
+      <h3>Reserva tu mesa</h3>
+      <form id="reservaForm">
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre y apellidos" required />
+        <input type="tel" id="telefono" name="telefono" placeholder="Número de teléfono" required />
+        <input type="email" id="correo" name="correo" placeholder="Correo electrónico" required />
+        <input type="number" id="personas" name="personas" placeholder="Cantidad de personas" min="1" required />
+        <input type="date" id="fecha" name="fecha" required />
+        <input type="time" id="hora" name="hora" required />
+        <button type="submit">Reservar</button>
+      </form>
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="footer_styles">
+      <section class="verify">
+        <p>© 2025 Fe & Ke Restaurantes</p>
+      </section>
+      <section class="social">
+        <p>¡Síguenos!</p>
+        <div class="social-icons">
+          <a href="https://wa.me/51924526213" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://instagram.com/felipeospe" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@felipe_ospina" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </section>
+    </footer>
+  </div>
+
+  <!-- Script de validación y envío -->
+  <script>
+    document.getElementById("reservaForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      // Obtener los campos
+      const nombre = document.getElementById("nombre");
+      const telefono = document.getElementById("telefono");
+      const correo = document.getElementById("correo");
+      const personas = document.getElementById("personas");
+      const fecha = document.getElementById("fecha");
+      const hora = document.getElementById("hora");
+
+      const campos = [nombre, telefono, correo, personas, fecha, hora];
+      let hayError = false;
+
+      // Limpiar estilos anteriores
+      campos.forEach(campo => campo.classList.remove("campo-error"));
+
+      // Validación de campos vacíos
+      campos.forEach(campo => {
+        if (!campo.value) {
+          campo.classList.add("campo-error");
+          hayError = true;
+        }
+      });
+
+      if (hayError) {
+        alert("Por favor, completa todos los campos antes de reservar.");
+        return;
+      }
+
+      // Validar que no sea lunes
+      const diaSeleccionado = new Date(fecha.value + 'T00:00:00').getDay(); // 1 = Lunes
+      if (diaSeleccionado === 1) {
+        alert("No se puede reservar los lunes. El restaurante está cerrado.");
+        return;
+      }
+
+      // Validar hora (8 a. m. a 9 p. m.)
+      const [horaSeleccionada, minutos] = hora.value.split(":");
+      const horaNum = parseInt(horaSeleccionada);
+      if (horaNum < 8 || horaNum >= 21) {
+        alert("El horario de atención es de 8:00 a. m. a 9:00 p. m.");
+        return;
+      }
+
+      // Preparar datos para enviar a Google Sheets
+      const datos = {
+        nombre: nombre.value,
+        telefono: telefono.value,
+        correo: correo.value,
+        personas: personas.value,
+        fecha: fecha.value,
+        hora: hora.value
+      };
+
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbyLmMsYufvn9-s7dFDSsSspLETOl73GDoijIAKa3tMZHVBlG-x_3JoIvtyz-LhZC1HQEw/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(datos)
+        });
+
+        alert("¡Reserva enviada con éxito!");
+        document.getElementById("reservaForm").reset();
+      } catch (error) {
+        console.error(error);
+        alert("Ocurrió un error al enviar la reserva.");
+      }
+    });
+  </script>
+</body>
+</html>

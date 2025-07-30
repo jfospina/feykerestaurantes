@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contacto - Fe&Ke</title>
+
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Íconos de Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="contenedor-pagina">
+    
+    <!-- Header -->
+    <header>
+      <p class="titulo">Fe&Ke RESTAURANTES</p>
+    </header>
+
+    <!-- Menú de navegación -->
+    <nav>
+      <div class="menu">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="https://drive.google.com/file/d/1tGZmCmgZf5KCLIlXTllO-6Lh3vxhGPOS/view?usp=drive_link" target="_blank">Carta</a></li>
+          <li><a href="reservas.html">Reservas</a></li>
+          <li><a href="eventos.html">Eventos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main>
+      <h3>Contáctanos</h3>
+
+      <!-- Formulario de contacto -->
+      <form action="https://formsubmit.co/javierfelospina@gmail.com" method="POST" class="formulario">
+        <input type="text" name="nombre" placeholder="Nombre y Apellidos" required>
+        <input type="email" name="correo" placeholder="Correo electrónico" required>
+        <input type="tel" name="telefono" placeholder="Teléfono" required>
+        <textarea name="mensaje" placeholder="Tu mensaje..." required></textarea>
+
+        <!-- Campos ocultos -->
+        <input type="hidden" name="_next" value="http://127.0.0.1:5500/html/gracias.html
+        ">
+        <input type="hidden" name="_captcha" value="false">
+
+        <button type="submit">Enviar mensaje</button>
+      </form>
+
+      <!-- Redes sociales -->
+      <h4>También puedes encontrarnos en:</h4>
+        <div class="social-icons">
+          <a href="https://wa.me/51924526213" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://instagram.com/felipeospe" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@felipe_ospina" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer_styles">
+      <section class="verify">
+        <div><p>© 2025 Fe & Ke Restaurantes</p></div>
+      </section>
+      <section class="social">
+        <p>¡Síguenos!</p>
+        <div class="social-icons">
+          <a href="https://wa.me/51999999999" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://instagram.com/tuusuario" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://tiktok.com/@tuusuario" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </section>
+    </footer>
+
+  </div>
+</body>
+</html>

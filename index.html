@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inicio - Fe&Ke</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="contenedor-pagina">
+    <header><p class="titulo">Fe&Ke RESTAURANTES</p></header>
+
+    <nav>
+      <div class="menu">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="https://drive.google.com/file/d/1tGZmCmgZf5KCLIlXTllO-6Lh3vxhGPOS/view?usp=drive_link" target="_blank">Carta</a></li>
+          <li><a href="reservas.html">Reservas</a></li>
+          <li><a href="eventos.html">Eventos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main>
+      <!-- ⭐ Favoritos -->
+      <h3>Nuestros Favoritos</h3>
+      <div class="carrusel-container">
+        <button id="prev-fav">&#10094;</button>
+        <div class="carrusel" id="carrusel-favoritos"></div>
+        <button id="next-fav">&#10095;</button>
+      </div>
+
+      <!-- 📅 Eventos -->
+      <h3>Eventos</h3>
+      <div id="eventos-actuales" class="galeria-horizontal"></div>
+
+      <!-- 🖼️ Nosotros (ambientes) con carrusel -->
+      <h3>Nosotros</h3>
+        <div class="carrusel-container">
+          <button id="prev-nosotros">&#10094;</button>
+        <div class="carrusel" id="galeria-nosotros"></div>
+          <button id="next-nosotros">&#10095;</button>
+        </div>
+    </main>
+
+    <footer class="footer_styles">
+      <section class="verify"><div><p>© 2025 Fe & Ke Restaurantes</p></div></section>
+      <section class="social">
+        <p>¡Síguenos!</p>
+        <div class="social-icons">
+          <a href="https://wa.me/51924526213" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://instagram.com/felipeospe" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@felipe_ospina" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </section>
+    </footer>
+  </div>
+
+<script>
+  const URL = "https://script.google.com/macros/s/AKfycbz15aES-KbTjvqgYj9bh4XprObmkMSC5R9TIoP8qpaNHBpqudC9xV_YYjn0dPleLWZPFw/exec";
+
+// 🥇 FAVORITOS desde hoja "platos"
+let indexFav = 0;
+const carrusel = document.getElementById("carrusel-favoritos");
+
+fetch(URL + "?hoja=platos")
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(plato => {
+      const card = document.createElement("div");
+      card.className = "flip-card";
+      card.innerHTML = `
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            <img src="../images/${plato.imagen}" alt="${plato.titulo || 'Sin nombre'}" />
+            <p>${plato.titulo || 'Sin nombre'}</p>
+          </div>
+          <div class="flip-card-back">
+            <p>${plato.descripcion || 'Delicioso plato de nuestra selección.'}</p>
+          </div>
+        </div>`;
+      carrusel.appendChild(card);
+    });
+
+    const total = carrusel.children.length;
+
+    function mostrarFavoritos() {
+      const cards = carrusel.children;
+      for (let i = 0; i < cards.length; i++) {
+        cards[i].style.display = (i >= indexFav && i < indexFav + 3) ? "flex" : "none";
+      }
+    }
+
+    mostrarFavoritos();
+
+    document.getElementById("next-fav").onclick = () => {
+      indexFav = (indexFav + 3) % total;
+      mostrarFavoritos();
+    };
+
+    document.getElementById("prev-fav").onclick = () => {
+      indexFav = (indexFav - 3 + total) % total;
+      mostrarFavoritos();
+    };
+  });
+
+  function mostrarFavoritos() {
+    const cards = carrusel.children;
+    for (let i = 0; i < cards.length; i++) {
+      cards[i].style.display = (i >= indexFav && i < indexFav + 3) ? "flex" : "none";
+    }
+  }
+
+  document.getElementById("next-fav").onclick = () => {
+    indexFav = (indexFav + 3) % favoritosLocales.length;
+    mostrarFavoritos();
+  };
+  document.getElementById("prev-fav").onclick = () => {
+    indexFav = (indexFav - 3 + favoritosLocales.length) % favoritosLocales.length;
+    mostrarFavoritos();
+  };
+
+  // 📅 EVENTOS
+  fetch(URL + "?hoja=eventos")
+    .then(res => res.json())
+    .then(data => {
+      const eventosActuales = data.filter(e => e.tipo === "actuales");
+      const contenedor = document.getElementById("eventos-actuales");
+      eventosActuales.forEach(eventos => {
+        const card = document.createElement("div");
+        card.className = "flip-card";
+        card.innerHTML = `
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <img src="../images/${eventos.imagen}" alt="${eventos.titulo}" />
+              <p>${eventos.titulo}</p>
+            </div>
+            <div class="flip-card-back">
+            <p>${eventos.descripcion}</p>
+          </div>
+          </div>`;
+        contenedor.appendChild(card);
+      });
+    });
+
+  // 🖼️ AMBIENTES con carrusel
+let indexNosotros = 0;
+
+fetch(URL + "?hoja=ambientes")
+  .then(res => res.json())
+  .then(data => {
+    const contenedor = document.getElementById("galeria-nosotros");
+
+    data.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "flip-card";
+      const esVideo = item.imagen.includes(".mp4");
+      const media = esVideo
+        ? `<video src="${item.imagen}" autoplay loop muted></video>`
+        : `<img src="../images/${item.imagen}" alt="${item.titulo}" />`;
+      card.innerHTML = `
+        <div class="flip-card-inner">
+          <div class="flip-card-front">
+            ${media}
+            <p>${item.titulo}</p>
+          </div>
+          <div class="flip-card-back">
+            <p>${item.descripcion}</p>
+          </div>
+        </div>`;
+      contenedor.appendChild(card);
+    });
+
+    // Mostrar solo 3 a la vez
+    function mostrarNosotros() {
+      const cards = contenedor.children;
+      for (let i = 0; i < cards.length; i++) {
+        cards[i].style.display = (i >= indexNosotros && i < indexNosotros + 3) ? "flex" : "none";
+      }
+    }
+
+    mostrarNosotros();
+
+    document.getElementById("next-nosotros").onclick = () => {
+      indexNosotros = (indexNosotros + 3) % contenedor.children.length;
+      mostrarNosotros();
+    };
+
+    document.getElementById("prev-nosotros").onclick = () => {
+      indexNosotros = (indexNosotros - 3 + contenedor.children.length) % contenedor.children.length;
+      mostrarNosotros();
+    };
+  });
+
+</script>
+</body>
+</html>

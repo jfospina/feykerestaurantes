@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nosotros - Fe&Ke</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="contenedor-pagina">
+    <!-- Header -->
+    <header>
+      <p class="titulo">Fe&Ke RESTAURANTES</p>
+    </header>
+
+    <!-- Navegación -->
+    <nav>
+      <div class="menu">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="https://drive.google.com/file/d/1tGZmCmgZf5KCLIlXTllO-6Lh3vxhGPOS/view?usp=drive_link" target="_blank">Carta</a></li>
+          <li><a href="reservas.html">Reservas</a></li>
+          <li><a href="eventos.html">Eventos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main>
+      <h3>¿Quiénes somos?</h3>
+      <p class="qs" id="quienes_somos">Cargando...</p>
+
+      <h3>Nuestra Visión</h3>
+      <p class="qs" id="vision">Cargando...</p>
+
+      <h3>Nuestra Historia</h3>
+      <p class="qs" id="historia">Cargando...</p>
+
+      <h3>Ambientes</h3>
+      <div id="galeria-ambientes" class="galeria-horizontal">
+        <!-- Se cargan automáticamente desde la hoja "ambientes" -->
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer_styles">
+      <section class="verify">
+        <div><p>© 2025 Fe & Ke Restaurantes</p></div>
+      </section>
+      <section class="social">
+        <p>¡Síguenos!</p>
+        <div class="social-icons">
+          <a href="https://wa.me/51924526213" target="_blank"><i class="fab fa-whatsapp"></i></a>
+          <a href="https://instagram.com/felipeospe" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@felipe_ospina" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </section>
+    </footer>
+  </div>
+
+  <!-- Script para cargar contenido desde Google Sheets -->
+  <script>
+    const URL_SHEET = "https://script.google.com/macros/s/AKfycbz15aES-KbTjvqgYj9bh4XprObmkMSC5R9TIoP8qpaNHBpqudC9xV_YYjn0dPleLWZPFw/exec";
+
+    // Contenido de texto: quienes somos, visión, historia
+    fetch(URL_SHEET + "?hoja=nosotros")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("quienes_somos").innerText = data.quienes_somos || "No disponible";
+        document.getElementById("vision").innerText = data.vision || "No disponible";
+        document.getElementById("historia").innerText = data.historia || "No disponible";
+      })
+      .catch(err => {
+        document.getElementById("quienes_somos").innerText = "Error al cargar.";
+        document.getElementById("vision").innerText = "Error al cargar.";
+        document.getElementById("historia").innerText = "Error al cargar.";
+        console.error("Error cargando datos de nosotros:", err);
+      });
+
+      // Cargar galería de ambientes desde la hoja "ambientes"
+      fetch(URL_SHEET + "?hoja=ambientes")
+      .then(res => res.json())
+        .then(data => {
+        const galeria = document.getElementById("galeria-ambientes");
+        galeria.innerHTML = "";
+        data.forEach(item => {
+        const div = document.createElement("div");
+          div.className = "flip-card";
+          div.innerHTML = `
+            <div class="flip-card-inner">
+            <div class="flip-card-front">
+            <img src="../images/${item.imagen}" alt="${item.titulo}">
+            <h4>${item.titulo}</h4>
+            </div>
+            <div class="flip-card-back">
+            <p>${item.descripcion}</p>
+              </div>
+            </div>
+      `;
+      galeria.appendChild(div);
+    });
+  })
+  </script>
+</body>
+</html>
